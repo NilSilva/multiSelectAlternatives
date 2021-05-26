@@ -1,8 +1,108 @@
 <h1>Carbon combobox</h1>
-<a href="https://angular.carbondesignsystem.com/?path=/story/components-combobox--dynamically-added-list-items"></a>
+<a
+  href="https://angular.carbondesignsystem.com/?path=/story/components-combobox--dynamically-added-list-items"
+  >Carbon combobox</a
+>
 
-<div style="padding: 10px; width: 500px; height: 300px;margin-top: 00px; background-color: grey;">
-  <ibm-combo-box [items]="items" type="multi" (selected)="updateSelected($event)">
+<div
+  style="padding: 10px; width: 500px; margin-top: 010px; background-color: grey"
+>
+  <ibm-combo-box
+    [items]="items"
+    type="multi"
+    (selected)="updateSelected($event)"
+  >
     <ibm-dropdown-list></ibm-dropdown-list>
   </ibm-combo-box>
+</div>
+
+<h1>Carbon tags - <strong>not working</strong></h1>
+<a
+  href="https://angular.carbondesignsystem.com/?path=/story/components-select--with-reactive-forms"
+  >Carbon select</a
+><br />
+<a
+  href="https://angular.carbondesignsystem.com/?path=/story/components-tag--filter"
+  >Carbon filter</a
+>
+
+<div
+  style="padding: 10px; width: 500px; margin-top: 010px; background-color: grey"
+>
+  <form [formGroup]="countryForm">
+    <ibm-select (valueChange)="selectChange($event)" formControlName="name">
+      <option value="default">Choose an option</option>
+      <option *ngFor="let country of items" value="{{ country.content }}">
+        {{ country.content }}
+      </option>
+    </ibm-select>
+  </form>
+  <ibm-tag-filter
+    *ngFor="let country of selectedCountries"
+    #filter
+    type="blue"
+    title="{{ country }}"
+    (close)="teste(country)"
+    closeButtonLabel="Clear"
+  >
+    {{ country }}
+  </ibm-tag-filter>
+</div>
+
+<h1>Material chips</h1>
+<a href="https://material.angular.io/components/chips/overview"
+  >Carbon combobox</a
+>
+
+<div style="width: 500px; margin-top: 10px">
+  <mat-form-field style="width: 100%">
+    <mat-label>Countries</mat-label>
+    <mat-chip-list #chipList>
+      <mat-chip
+        *ngFor="let country of selectedCountries"
+        selectable="true"
+        removable="true"
+        (removed)="remove(country)"
+      >
+        {{ country }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Country"
+        #countryInput
+        [formControl]="countryCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-chip-list>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selected($event)"
+    >
+      <mat-option
+        *ngFor="let country of filteredCountries | async"
+        [value]="country"
+      >
+        {{ country }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
+<h1>Checkboxes</h1>
+<a
+  href="https://angular.carbondesignsystem.com/?path=/story/components-checkbox--basic"
+  >Carbon checkbox</a
+>
+
+<div style="width: 150px;margin-top: 10px; max-height: 150px; overflow-y: auto;">
+  <ibm-checkbox
+  style="width: fit-content;"
+    *ngFor="let country of items"
+    [checked]="country.selected"
+  >
+    {{country.content}}
+  </ibm-checkbox>
 </div>

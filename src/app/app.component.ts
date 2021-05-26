@@ -1,4 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { Observable } from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +16,36 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'multiSelectAlternatives';
+  model = '';
+
+  countryForm = new FormGroup({
+    name: new FormControl(null, [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+  });
+
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  countryCtrl = new FormControl();
+
+  countries = [
+    'Mexico',
+    'Philippines',
+    'Argentina',
+    'Brazil',
+    'Nigeria',
+    'Barbados',
+    'Croatia',
+    'Tanzania',
+    'Madagascar',
+    'Turkmenistan',
+    'Portugal',
+    'Macedonia',
+  ];
+
+  selectedCountries = ['Madagascar', 'Turkmenistan', 'Portugal'];
+
+  filteredCountries: Observable<string[]>;
 
   items = [
     {
@@ -22,24 +61,8 @@ export class AppComponent {
       selected: false,
     },
     {
-      content: 'Argentina',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'Philippines',
-      selected: true,
-    },
-    {
       content: 'Brazil',
       selected: true,
-    },
-    {
-      content: 'China',
-      selected: false,
     },
     {
       content: 'Nigeria',
@@ -58,31 +81,11 @@ export class AppComponent {
       selected: false,
     },
     {
-      content: 'Brazil',
-      selected: true,
-    },
-    {
-      content: 'Indonesia',
-      selected: false,
-    },
-    {
-      content: 'Brazil',
-      selected: true,
-    },
-    {
       content: 'Madagascar',
       selected: true,
     },
     {
       content: 'Turkmenistan',
-      selected: false,
-    },
-    {
-      content: 'Brazil',
-      selected: true,
-    },
-    {
-      content: 'Portugal',
       selected: false,
     },
     {
@@ -94,32 +97,12 @@ export class AppComponent {
       selected: false,
     },
     {
-      content: 'Greece',
-      selected: false,
-    },
-    {
-      content: 'Madagascar',
-      selected: true,
-    },
-    {
       content: 'Kazakhstan',
       selected: true,
     },
     {
-      content: 'Indonesia',
-      selected: false,
-    },
-    {
       content: 'Colombia',
       selected: true,
-    },
-    {
-      content: 'United States',
-      selected: true,
-    },
-    {
-      content: 'Philippines',
-      selected: false,
     },
     {
       content: 'Panama',
@@ -130,18 +113,6 @@ export class AppComponent {
       selected: true,
     },
     {
-      content: 'Japan',
-      selected: true,
-    },
-    {
-      content: 'Portugal',
-      selected: false,
-    },
-    {
-      content: 'Indonesia',
-      selected: false,
-    },
-    {
       content: 'Taiwan',
       selected: true,
     },
@@ -150,19 +121,7 @@ export class AppComponent {
       selected: false,
     },
     {
-      content: 'Philippines',
-      selected: true,
-    },
-    {
       content: 'Malawi',
-      selected: true,
-    },
-    {
-      content: 'Indonesia',
-      selected: false,
-    },
-    {
-      content: 'China',
       selected: true,
     },
     {
@@ -178,56 +137,12 @@ export class AppComponent {
       selected: true,
     },
     {
-      content: 'Philippines',
-      selected: false,
-    },
-    {
-      content: 'Indonesia',
-      selected: false,
-    },
-    {
       content: 'United States',
-      selected: false,
-    },
-    {
-      content: 'China',
       selected: false,
     },
     {
       content: 'Greece',
       selected: true,
-    },
-    {
-      content: 'Brazil',
-      selected: false,
-    },
-    {
-      content: 'Indonesia',
-      selected: true,
-    },
-    {
-      content: 'Brazil',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'Indonesia',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: false,
-    },
-    {
-      content: 'Mexico',
-      selected: false,
-    },
-    {
-      content: 'China',
-      selected: false,
     },
     {
       content: 'Venezuela',
@@ -238,27 +153,7 @@ export class AppComponent {
       selected: false,
     },
     {
-      content: 'Portugal',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: false,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
       content: 'Yemen',
-      selected: true,
-    },
-    {
-      content: 'China',
       selected: true,
     },
     {
@@ -270,132 +165,24 @@ export class AppComponent {
       selected: false,
     },
     {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'Macedonia',
-      selected: true,
-    },
-    {
-      content: 'Croatia',
-      selected: false,
-    },
-    {
-      content: 'China',
-      selected: false,
-    },
-    {
-      content: 'Indonesia',
-      selected: false,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
       content: 'Botswana',
       selected: true,
     },
     {
-      content: 'Colombia',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: false,
-    },
-    {
-      content: 'Portugal',
-      selected: false,
-    },
-    {
-      content: 'Greece',
-      selected: false,
-    },
-    {
       content: 'Indonesia',
       selected: true,
     },
     {
-      content: 'Brazil',
-      selected: false,
-    },
-    {
-      content: 'China',
-      selected: false,
-    },
-    {
-      content: 'Japan',
-      selected: true,
-    },
-    {
-      content: 'Poland',
-      selected: false,
-    },
-    {
-      content: 'Russia',
-      selected: true,
-    },
-    {
-      content: 'United States',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
       content: 'Japan',
       selected: false,
     },
     {
       content: 'China',
       selected: false,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'China',
-      selected: true,
     },
     {
       content: 'Sweden',
       selected: false,
-    },
-    {
-      content: 'China',
-      selected: true,
-    },
-    {
-      content: 'Indonesia',
-      selected: false,
-    },
-    {
-      content: 'Indonesia',
-      selected: true,
-    },
-    {
-      content: 'Canada',
-      selected: false,
-    },
-    {
-      content: 'Philippines',
-      selected: true,
-    },
-    {
-      content: 'Tanzania',
-      selected: true,
     },
     {
       content: 'Russia',
@@ -405,13 +192,68 @@ export class AppComponent {
       content: 'Malaysia',
       selected: true,
     },
-    {
-      content: 'Poland',
-      selected: false,
-    },
   ];
 
-  updateSelected(event: any) {
-    console.log(event);
+  @ViewChild('countryInput') countryInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+
+  updateSelected(event: any) {}
+
+  selectChange(event: any) {
+    this.selectedCountries.push(event)
+    this.countryForm.controls['name'].setValue('default');
+  }
+
+  constructor() {
+    this.filteredCountries = this.countryCtrl.valueChanges.pipe(
+      startWith(null),
+      map((fruit: string | null) => fruit ? this._filter(fruit) : this.countries.slice()));
+  }
+
+  teste(event: any) {
+    console.log('remove - ' + event);
+    let index = this.selectedCountries.indexOf(event);
+
+    if (index >= 0) {
+      this.selectedCountries.splice(index, 1);
+    }
+    this.countryForm.controls['name'].setValue('default');
+  }
+
+  remove(country: any): void {
+    let index = this.selectedCountries.indexOf(country);
+
+    if (index >= 0) {
+      this.selectedCountries.splice(index, 1);
+    }
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      this.items.push({
+        content: value,
+        selected: true,
+      });
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.countryForm.controls['name'].setValue(null);
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedCountries.push(event.option.viewValue);
+    this.countryInput.nativeElement.value = '';
+    this.countryCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.countries.filter(country => country.toLowerCase().indexOf(filterValue) === 0);
   }
 }
